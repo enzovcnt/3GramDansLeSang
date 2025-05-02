@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}3GramDansLeSang{% endblock %}</title>
         <link rel="icon" href="{{ asset('images/favicon-16x16.png') }}">
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
@@ -13,6 +13,9 @@
         {% endblock %}
     </head>
     <body>
+    <div class="container">
         {% block body %}{% endblock %}
+    </div>
+
     </body>
 </html>
