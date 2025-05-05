@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Post;
+use App\Form\ImageForm;
 use App\Form\PostForm;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,7 +46,7 @@ final class PostController extends AbstractController
             $post->setAuthor($this->getUser());
             $manager->persist($post);
             $manager->flush();
-            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+            return $this->redirectToRoute('app_post_addimage', ['id' => $post->getId()]);
         }
 
         return $this->render('post/create.html.twig', [
@@ -74,7 +76,7 @@ final class PostController extends AbstractController
     }
 
     #[Route('/post/{id}/delete', name: 'app_post_delete')]
-public function delete(Post $post, EntityManagerInterface $manager): Response
+    public function delete(Post $post, EntityManagerInterface $manager): Response
     {
         if (!$this->getUser())
         {
@@ -88,4 +90,52 @@ public function delete(Post $post, EntityManagerInterface $manager): Response
         $manager->flush();
         return $this->redirectToRoute('app_posts');
     }
+
+    #[Route('/post/addimage/{id}', name: 'app_post_addimage')]
+    public function addImage(Post $post, Request $request, EntityManagerInterface $manager) : Response
+    {
+        if(!$this->getUser() || !$post)
+        {
+            return $this->redirectToRoute('app_login');
+        }
+        if($post->getAuthor() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN'))
+        {
+            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+        }
+        $image = new Image();
+        $formImage = $this->createForm(ImageForm::class, $image);
+        $formImage->handleRequest($request);
+        if($formImage->isSubmitted() && $formImage->isValid()){
+            $image->setPost($post);
+            $manager->persist($image);
+            $manager->flush();
+            return $this->redirectToRoute('app_post_addimage', ['id' => $post->getId()]);
+        }
+
+
+        return $this->render('post/image.html.twig', [
+            'post' => $post,
+            'formImage' => $formImage->createView(),
+        ]);
+    }
+
+    #[Route('/post/removeImage/{id}', name: 'app_removeImage')]
+    public function removeImage(Image $image, EntityManagerInterface $manager) : Response
+    {
+        if(!$this->getUser() || !$image)
+        {
+            return $this->redirectToRoute('app_login');
+        }
+        if($image->getPost()->getAuthor() !== $this->getUser())
+        {
+            return $this->redirectToRoute('app_post_show', ['id' => $image->getId()]);
+        }
+        $postId = $image->getPost()->getId();
+        $manager->remove($image);
+        $manager->flush();
+
+
+        return $this->redirectToRoute('app_post_addimage', ['id' => $postId]);
+    }
+
 }

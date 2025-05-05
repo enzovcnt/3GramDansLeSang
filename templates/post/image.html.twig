@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% form_theme formImage 'tailwind_2_layout.html.twig' %}
+{% block body %}
+
+
+
+    <div class="">
+        {% for image in post.image %}
+            <div class="">
+                <img class="h-auto max-w-xl" src="{{ vich_uploader_asset(image, "imageFile") | imagine_filter('imagePost') }}" alt="image description">
+                <a href="{{ path('app_removeImage',{id:image.id}) }}">X</a>
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+
+    {{ form_start(formImage) }}
+    {{ form_row(formImage.imageFile) }}
+    <button type="submit">Envoyer</button>
+    {{ form_end(formImage) }}
+
+    <a href="{{ path('app_post_show', {id:post.id}) }}" class="card-link btn btn-warning">retour</a>
+
+
+{% endblock %}

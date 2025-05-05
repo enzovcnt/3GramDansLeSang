@@ -5,6 +5,9 @@
 {% block body %}
     {% for post in posts %}
     <div class="max-w-sm rounded overflow-hidden shadow-lg">
+        {% for img in post.image %}
+            <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
+        {% endfor %}
 
         <div class="px-6 py-4">
 
@@ -18,9 +21,7 @@
 
         </div>
         <div class="px-6 pt-4 pb-2">
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+            <span>Futur hashtag</span>
         </div>
     </div>
     {% endfor %}
