@@ -23,6 +23,11 @@
             <a href="" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
                 Logout
             </a>
+                {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                    <a href="{{ path('app_admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                        Logout
+                    </a>
+                {% endif %}
             {% else %}
             <a href="{{ path('app_register') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                 Register
