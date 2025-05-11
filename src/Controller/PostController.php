@@ -63,7 +63,11 @@ final class PostController extends AbstractController
         $form = $this->createForm(PostForm::class, $post);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $post->setAuthor($this->getUser());
+            $user = $this->getUser();
+
+            $profile = $user->getProfile();
+            $post->setAuthor($user);
+            $post->setProfile($profile);
             $manager->persist($post);
             $manager->flush();
             return $this->redirectToRoute('app_post_addimage', ['id' => $post->getId()]);
