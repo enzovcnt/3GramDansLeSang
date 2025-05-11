@@ -33,9 +33,37 @@ class Profile
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'profile')]
     private Collection $posts;
 
+    /**
+     * @var Collection<int, Friendship>
+     */
+    #[ORM\OneToMany(targetEntity: Friendship::class, mappedBy: 'personA')]
+    private Collection $friendAsPersonA;
+
+    /**
+     * @var Collection<int, Friendship>
+     */
+    #[ORM\OneToMany(targetEntity: Friendship::class, mappedBy: 'personB')]
+    private Collection $friendAsPersonB;
+
+    /**
+     * @var Collection<int, FriendRequest>
+     */
+    #[ORM\OneToMany(targetEntity: FriendRequest::class, mappedBy: 'sender')]
+    private Collection $sentRequest;
+
+    /**
+     * @var Collection<int, FriendRequest>
+     */
+    #[ORM\OneToMany(targetEntity: FriendRequest::class, mappedBy: 'recipient')]
+    private Collection $receivedFriendRequest;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->friendAsPersonA = new ArrayCollection();
+        $this->friendAsPersonB = new ArrayCollection();
+        $this->sentRequest = new ArrayCollection();
+        $this->receivedFriendRequest = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,9 +103,6 @@ class Profile
     public function setOfUser(?User $ofUser): static
     {
 
-        if ($ofUser->getProfile() !== $this) {
-            $ofUser->setProfile($this);
-        }
         $this->ofUser = $ofUser;
         return $this;
     }
@@ -111,5 +136,167 @@ class Profile
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Friendship>
+     */
+    public function getFriendAsPersonA(): Collection
+    {
+        return $this->friendAsPersonA;
+    }
+
+    public function addFriendAsPersonA(Friendship $friendAsPersonA): static
+    {
+        if (!$this->friendAsPersonA->contains($friendAsPersonA)) {
+            $this->friendAsPersonA->add($friendAsPersonA);
+            $friendAsPersonA->setPersonA($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriendAsPersonA(Friendship $friendAsPersonA): static
+    {
+        if ($this->friendAsPersonA->removeElement($friendAsPersonA)) {
+            // set the owning side to null (unless already changed)
+            if ($friendAsPersonA->getPersonA() === $this) {
+                $friendAsPersonA->setPersonA(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friendship>
+     */
+    public function getFriendAsPersonB(): Collection
+    {
+        return $this->friendAsPersonB;
+    }
+
+    public function addFriendAsPersonB(Friendship $friendAsPersonB): static
+    {
+        if (!$this->friendAsPersonB->contains($friendAsPersonB)) {
+            $this->friendAsPersonB->add($friendAsPersonB);
+            $friendAsPersonB->setPersonB($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriendAsPersonB(Friendship $friendAsPersonB): static
+    {
+        if ($this->friendAsPersonB->removeElement($friendAsPersonB)) {
+            // set the owning side to null (unless already changed)
+            if ($friendAsPersonB->getPersonB() === $this) {
+                $friendAsPersonB->setPersonB(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FriendRequest>
+     */
+    public function getSentRequest(): Collection
+    {
+        return $this->sentRequest;
+    }
+
+    public function addSentRequest(FriendRequest $sentRequest): static
+    {
+        if (!$this->sentRequest->contains($sentRequest)) {
+            $this->sentRequest->add($sentRequest);
+            $sentRequest->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentRequest(FriendRequest $sentRequest): static
+    {
+        if ($this->sentRequest->removeElement($sentRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($sentRequest->getSender() === $this) {
+                $sentRequest->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FriendRequest>
+     */
+    public function getReceivedFriendRequest(): Collection
+    {
+        return $this->receivedFriendRequest;
+    }
+
+    public function addReceivedFriendRequest(FriendRequest $receivedFriendRequest): static
+    {
+        if (!$this->receivedFriendRequest->contains($receivedFriendRequest)) {
+            $this->receivedFriendRequest->add($receivedFriendRequest);
+            $receivedFriendRequest->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedFriendRequest(FriendRequest $receivedFriendRequest): static
+    {
+        if ($this->receivedFriendRequest->removeElement($receivedFriendRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedFriendRequest->getRecipient() === $this) {
+                $receivedFriendRequest->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isPendingFriendRequest(Profile $profile): bool
+    {
+        foreach ($this->receivedFriendRequest as $friendRequest) {
+            if ($friendRequest->getSender() === $profile) {
+                return true;
+            }
+        }
+        foreach ($this->sentRequest as $friendRequest) {
+            if ($friendRequest->getRecipient() === $profile) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isFriendsWith(Profile $profile): bool
+    {
+        foreach ($this->friendAsPersonA as $friendShip) {
+            if ($friendShip->getPersonB() === $profile) {
+                return true;
+            }
+        }
+
+        foreach ($this->friendAsPersonB as $friendShip) {
+            if ($friendShip->getPersonA() === $profile) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getFriends() : array
+    {
+        $friends = [];
+        foreach ($this->friendAsPersonA as $friendShip) {
+            $friends[] =$friendShip->getPersonB();
+        }
+        foreach ($this->friendAsPersonB as $friendShip) {
+            $friends[] =$friendShip->getPersonA();
+        }
+        return $friends;
     }
 }

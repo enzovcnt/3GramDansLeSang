@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Post;
+use App\Entity\Profile;
+use App\Entity\User;
 use App\Form\CommentForm;
 use App\Form\ImageForm;
 use App\Form\PostForm;
@@ -113,6 +115,18 @@ final class PostController extends AbstractController
         $manager->remove($post);
         $manager->flush();
         return $this->redirectToRoute('app_posts');
+    }
+
+    #[Route('/postFriend', name: 'app_post_friend')]
+    public function friendPost(PostRepository $postRepository) : Response
+    {
+        $user = $this->getUser();
+
+        $profile = $user->getProfile();
+        $posts = $postRepository->findByFriends($profile);
+        return $this->render('post/friend.html.twig', [
+            'posts' => $posts,
+        ]);
     }
 
     #[Route('/post/addimage/{id}', name: 'app_post_addimage')]

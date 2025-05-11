@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\Profile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,22 @@ class PostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Post::class);
     }
+
+    public function findByFriends(Profile $profile): array
+    {
+        $friends = $profile->getFriends();
+
+        if (empty($friends)) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('p')
+            ->where('p.profile IN (:friends)')
+            ->setParameter('friends', $friends)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Post[] Returns an array of Post objects

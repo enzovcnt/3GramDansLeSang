@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PeopleController!{% endblock %}
+
+{% block body %}
+    <h3>the people</h3>
+    {% for profile in profiles %}
+
+        {% if profile != app.user.profile %}
+
+            <p><strong>{{ profile.ofUser.email }}
+
+                    {% if not app.user.profile.isFriendsWith(profile) and not app.user.profile.isPendingFriendRequest(profile) %}
+
+                        <a href="{{ path('app_send_friend_request', { id:profile.id}) }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Request friendship</a>
+
+                    {% endif %}
+                </strong></p>
+
+        {% endif %}
+
+
+    {% endfor %}
+
+    <h3>My sent friend requests</h3>
+    {% for sentRequest in app.user.profile.sentRequest %}
+
+        <p><strong>asked {{ sentRequest.recipient.ofUser.email }}</strong></p>
+
+    {% endfor %}
+
+    <h3>People requesting my friendship</h3>
+    {% for receivedRequest in app.user.profile.receivedFriendRequest %}
+
+        <p><strong>asked {{ receivedRequest.sender.ofUser.email }}
+                <a href="{{ path('app_accept_friend_request', {id:receivedRequest.id}) }}" class="bg-blue-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Accept</a>
+                <a href="{{ path('app_decline_friend_request', {id:receivedRequest.id}) }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Decline</a>
+            </strong></p>
+
+    {% endfor %}
+
+    <h3>My friends :</h3>
+
+    {% for friend in app.user.profile.getFriends() %}
+
+        <p><strong>{{ friend.ofUser.email }} </p>
+
+    {% endfor %}
+{% endblock %}

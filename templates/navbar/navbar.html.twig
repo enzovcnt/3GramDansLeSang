@@ -21,11 +21,11 @@
             <a href="{{ path('app_post_create') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                 Create
             </a>
-            <a href="" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_people') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                 Friends
             </a>
-            <a href="" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-                Chat
+            <a href="{{ path('app_post_friend') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                PostFriend
             </a>
             {% if app.user.profile %}
                 <a href="">
