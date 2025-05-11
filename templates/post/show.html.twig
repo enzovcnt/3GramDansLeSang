@@ -14,13 +14,18 @@
                     {{ post.content }}
                 </p>
                 <p>
-                    {{ post.author.email }}
+                    {% if app.user.profile %}
+                            {{ app.user.profile.displayName }}
+                    {% else %}
+                            {{ app.user.email }}
+                    {% endif %}
                 </p>
                 <a href="{{ path('app_posts') }}">Retour</a>
                 <a href="{{ path('app_post_edit', {id:post.id}) }}">Editer</a>
                 <a href="{{ path('app_post_delete', {id:post.id}) }}">supprimer</a>
                 <a href="{{ path('app_post_addimage', {id:post.id}) }}">Ajouter Image</a>
                 <a href="{{ path('app_comment', {id:post.id}) }}">comment</a>
+
             </div>
             <div class="px-6 pt-4 pb-2">
                 <span>Futur hashtag</span>
