@@ -11,22 +11,34 @@
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="text-sm lg:flex-grow">
             {% if app.user %}
+                {% if app.user and app.user.profile %}
+                    <a href="{{ path('app_profile', {id: app.user.profile.id}) }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">Mon Profil</a>
+                {% endif %}
+
             <a href="{{ path('app_posts') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                 Accueil
             </a>
             <a href="{{ path('app_post_create') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                 Create
             </a>
+            {% if app.user.profile %}
+                <a href="">
+                    {{ app.user.profile.displayName }}
+                </a>
+                {% else %}
                 <a href="">
                     {{ app.user.email }}
                 </a>
-            <a href="" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                    {% endif %}
+            <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
                 Logout
             </a>
+
                 {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
                     <a href="{{ path('app_admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
                         Admin
                     </a>
+
                 {% endif %}
             {% else %}
             <a href="{{ path('app_register') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">

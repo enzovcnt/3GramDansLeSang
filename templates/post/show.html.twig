@@ -1,47 +1,48 @@
 {% extends('base.html.twig') %}
-
+{% form_theme formComment 'tailwind_2_layout.html.twig' %}
 {% block body %}
 
-    <div class="max-w-sm rounded overflow-hidden shadow-lg">
-        {% for img in post.image %}
-            <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
+    <div class="flex justify-center mt-5 mb-5 w-full">
+
+        <div class="w-full max-w-9/10 rounded overflow-hidden shadow-lg">
+            {% for img in post.image %}
+                <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
+            {% endfor %}
+            <div class="px-6 py-4">
+
+                <p class="text-gray-700 text-3xl">
+                    {{ post.content }}
+                </p>
+                <p>
+                    {{ post.author.email }}
+                </p>
+                <a href="{{ path('app_posts') }}">Retour</a>
+                <a href="{{ path('app_post_edit', {id:post.id}) }}">Editer</a>
+                <a href="{{ path('app_post_delete', {id:post.id}) }}">supprimer</a>
+                <a href="{{ path('app_post_addimage', {id:post.id}) }}">Ajouter Image</a>
+                <a href="{{ path('app_comment', {id:post.id}) }}">comment</a>
+            </div>
+            <div class="px-6 pt-4 pb-2">
+                <span>Futur hashtag</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-5 mb-5">
+        <div class="border bg-gray-200">
+            {{ form_start(formComment, {'action': path('app_comment', {id:post.id}), 'method': 'POST'}) }}
+            {{ form_row(formComment.content) }}
+            <button type="submit" class="">Envoyer</button>
+            {{ form_end(formComment) }}
+        </div>
+
+        {% for comment in post.comments %}
+            <div>
+                <p>Author : {{ comment.author.email }}</p>
+                <p>{{ comment.content }}</p>
+            </div>
         {% endfor %}
-        <div class="px-6 py-4">
-
-            <p class="text-gray-700 text-base">
-                {{ post.content }}
-            </p>
-            <p>
-                {{ post.author.email }}
-            </p>
-            <a href="{{ path('app_posts') }}">Retour</a>
-            <a href="{{ path('app_post_edit', {id:post.id}) }}">Editer</a>
-            <a href="{{ path('app_post_delete', {id:post.id}) }}">supprimer</a>
-            <a href="{{ path('app_post_addimage', {id:post.id}) }}">Ajouter Image</a>
-            <a href="{{ path('app_comment', {id:post.id}) }}">comment</a>
-        </div>
-        <div class="px-6 pt-4 pb-2">
-            <span>Futur hashtag</span>
-        </div>
     </div>
-
-
-
-    <div>
-        {{ form_start(formComment, {'action': path('app_comment', {id:post.id}), 'method': 'POST'}) }}
-        {{ form_row(formComment.content) }}
-        <button type="submit" class="">Envoyer</button>
-        {{ form_end(formComment) }}
-    </div>
-
-    {% for comment in post.comments %}
-    <div>
-        <p>Author : {{ comment.author.email }}</p>
-        <p>{{ comment.content }}</p>
-
-
-    </div>
-    {% endfor %}
 
 
 {% endblock %}

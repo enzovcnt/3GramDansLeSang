@@ -9,7 +9,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[Vich\Uploadable]
-class Image
+class Image implements \Serializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,6 +31,9 @@ class Image
 
     #[ORM\ManyToOne(inversedBy: 'image')]
     private ?Post $post = null;
+
+    #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
+    private ?Profile $profile = null;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -92,5 +95,49 @@ class Image
         $this->post = $post;
 
         return $this;
+    }
+
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?Profile $profile): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($profile === null && $this->profile !== null) {
+            $this->profile->setImage(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($profile !== null && $profile->getImage() !== $this) {
+            $profile->setImage($this);
+        }
+
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->imageName,
+        ));
+    }
+
+    public function unserialize(string $data)
+    {
+        return unserialize($data);
+    }
+
+    public function __serialize(): array
+    {
+        return ['imageName' => $this->imageName,];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->imageName = $data['imageName'];
     }
 }
