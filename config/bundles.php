@@ -19,4 +19,5 @@ return [
     Symfony\UX\Typed\TypedBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
+    Symfony\UX\Autocomplete\AutocompleteBundle::class => ['all' => true],
 ];
