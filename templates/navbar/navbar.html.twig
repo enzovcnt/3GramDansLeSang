@@ -1,7 +1,22 @@
-<nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+<nav class="flex items-center justify-between flex-wrap bg-gray-500 p-6 sticky top-0 z-50 shadow-md">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
-        <span class="font-semibold text-xl tracking-tight">Tailwind CSS</span>
+        <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cercle central -->
+            <circle cx="50" cy="50" r="20" fill="yellow" />
+
+            <!-- Rayons -->
+            <g stroke="orange" stroke-width="4">
+                <line x1="50" y1="5" x2="50" y2="20"/>
+                <line x1="50" y1="80" x2="50" y2="95"/>
+                <line x1="5" y1="50" x2="20" y2="50"/>
+                <line x1="80" y1="50" x2="95" y2="50"/>
+                <line x1="20" y1="20" x2="30" y2="30"/>
+                <line x1="80" y1="80" x2="70" y2="70"/>
+                <line x1="20" y1="80" x2="30" y2="70"/>
+                <line x1="80" y1="20" x2="70" y2="30"/>
+            </g>
+        </svg>
+        <span class="font-semibold text-xl tracking-tight ms-3">3GDLS</span>
     </div>
     <div class="block lg:hidden">
         <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
@@ -11,46 +26,48 @@
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="text-sm lg:flex-grow">
             {% if app.user %}
-                {% if app.user and app.user.profile %}
-                    <a href="{{ path('app_profile', {id: app.user.profile.id}) }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">Mon Profil</a>
-                {% endif %}
-
-            <a href="{{ path('app_posts') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_posts') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 Accueil
             </a>
-            <a href="{{ path('app_post_create') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_post_create') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 Create
             </a>
-            <a href="{{ path('app_people') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_people') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 Friends
             </a>
-            <a href="{{ path('app_post_friend') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_post_friend') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 PostFriend
             </a>
-            {% if app.user.profile %}
-                <a href="">
+            {% if app.user and app.user.profile %}
+                <a href="{{ path('app_profile', {id: app.user.profile.id}) }}" class="text-xl">
                     {{ app.user.profile.displayName }}
                 </a>
-                {% else %}
-                <a href="">
+                {% if app.user.profile.image %}
+                    <a href="{{ path('app_profile', {id: app.user.profile.id}) }}">
+                        <img src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile')|imagine_filter('imagePP') }}"
+                             alt="..." class="rounded-full max-w-50 max-h-50" >
+                    </a>
+                {% endif %}
+            {% endif %}
+                <a href="{{ path('app_profile', {id: app.user.profile.id}) }}" class="text-xl">
                     {{ app.user.email }}
                 </a>
-                    {% endif %}
-            <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+
+            <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">
                 Logout
             </a>
 
                 {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-                    <a href="{{ path('app_admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                    <a href="{{ path('app_admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">
                         Admin
                     </a>
 
                 {% endif %}
             {% else %}
-            <a href="{{ path('app_register') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_register') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 Register
             </a>
-            <a href="{{ path('app_login') }}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <a href="{{ path('app_login') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 Login
             </a>
             {% endif %}

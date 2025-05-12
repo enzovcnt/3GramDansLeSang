@@ -2,28 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Image;
-use App\Entity\Post;
+use App\Entity\Profile;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\UX\Dropzone\Form\DropzoneType;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ImageForm extends AbstractType
+class UserForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('imageFile', DropzoneType::class)
+            ->add('email', UserAutocompleteField::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Image::class,
+            'data_class' => User::class,
         ]);
     }
 }

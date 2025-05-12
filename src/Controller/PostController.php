@@ -22,6 +22,10 @@ final class PostController extends AbstractController
     #[Route('/', name: 'app_posts')]
     public function index(PostRepository $postRepository): Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('post/index.html.twig', [
             'posts' => $postRepository->findAll(),
         ]);
@@ -65,8 +69,9 @@ final class PostController extends AbstractController
         $form = $this->createForm(PostForm::class, $post);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            //redondance > corrige ça
+            //$post->setAuthor($this->getUser()->getProfile());
             $user = $this->getUser();
-
             $profile = $user->getProfile();
             $post->setAuthor($user);
             $post->setProfile($profile);
@@ -120,8 +125,11 @@ final class PostController extends AbstractController
     #[Route('/postFriend', name: 'app_post_friend')]
     public function friendPost(PostRepository $postRepository) : Response
     {
+        if (!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         $user = $this->getUser();
-
         $profile = $user->getProfile();
         $posts = $postRepository->findByFriends($profile);
         return $this->render('post/friend.html.twig', [

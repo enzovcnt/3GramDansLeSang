@@ -3,32 +3,34 @@
 {% block title %}Hello PostController!{% endblock %}
 
 {% block body %}
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 ">
     {% for post in posts %}
+        <div class="flex w-full justify-center">
+            <div class="w-full rounded overflow-hidden shadow-lg mt-5 " >
+                {% for img in post.image %}
+                    <a href="{{ path('app_post_show', {id:post.id}) }}">
+                        <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
+                    </a>
+                {% endfor %}
+                <div class="px-6 pt-4 pb-2">
+                    <a href="" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Autre chose</a>
+                </div>
+                <div class="px-6 py-4">
+                    <p>
+                        {{ post.author.email }}
+                    </p>
+                    <p class="text-gray-700 text-base">
+                        {{ post.content }}
+                    </p>
+                </div>
 
-    <div class="max-w-sm rounded overflow-hidden shadow-lg mt-5" >
-        {% for img in post.image %}
-            <a href="{{ path('app_post_show', {id:post.id}) }}">
-                <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
-            </a>
-        {% endfor %}
-        <div class="px-6 pt-4 pb-2">
-            <a href="" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Autre chose</a>
-        </div>
-        <div class="px-6 py-4">
-            <p>
-                {{ post.author.email }}
-            </p>
-            <p class="text-gray-700 text-base">
-                {{ post.content }}
-            </p>
+
+                <div class="px-6 pt-4 pb-2">
+                    <span>Futur hashtag</span>
+                </div>
+            </div>
         </div>
 
-
-        <div class="px-6 pt-4 pb-2">
-            <span>Futur hashtag</span>
-        </div>
-    </div>
     {% endfor %}
     </div>
 {% endblock %}
