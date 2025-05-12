@@ -24,7 +24,7 @@
         </button>
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div class="text-sm lg:flex-grow">
+        <div class="text-xl lg:flex-grow">
             {% if app.user %}
             <a href="{{ path('app_posts') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 Accueil
@@ -38,20 +38,17 @@
             <a href="{{ path('app_post_friend') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
                 PostFriend
             </a>
-            {% if app.user and app.user.profile %}
-                <a href="{{ path('app_profile', {id: app.user.profile.id}) }}" class="text-xl">
-                    {{ app.user.profile.displayName }}
-                </a>
                 {% if app.user.profile.image %}
                     <a href="{{ path('app_profile', {id: app.user.profile.id}) }}">
                         <img src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile')|imagine_filter('imagePP') }}"
                              alt="..." class="rounded-full max-w-50 max-h-50" >
                     </a>
                 {% endif %}
-            {% endif %}
-                <a href="{{ path('app_profile', {id: app.user.profile.id}) }}" class="text-xl">
+                {% if app.user.profile.displayName %}
+                    <p><strong>{{ app.user.profile.displayName }}</strong></p>
+                {% else %}
                     {{ app.user.email }}
-                </a>
+                {% endif %}
 
             <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">
                 Logout

@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Profile;
 use App\Form\ImageForm;
 use App\Form\ProfileForm;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,13 +17,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProfileController extends AbstractController
 {
     #[Route('/profile/{id}', name: 'app_profile')]
-    public function profile(EntityManagerInterface $manager, Request $request, Profile $profile): Response
+    public function profile(EntityManagerInterface $manager, Request $request, Profile $profile, PostRepository $postRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
         $user = $this->getUser();
-
         $form = $this->createForm(ProfileForm::class, $profile);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,6 +34,7 @@ final class ProfileController extends AbstractController
             'formProfile' => $form,
             'profile' => $profile,
             'user' => $user,
+            'posts' => $postRepository->findBy(['profile' => $profile->getId()])
         ]);
     }
 

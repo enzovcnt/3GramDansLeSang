@@ -41,6 +41,7 @@
         "symfony/twig-bundle": "7.2.*",
         "symfony/ux-autocomplete": "^2.24",
         "symfony/ux-dropzone": "^2.24",
+        "symfony/ux-icons": "^2.24",
         "symfony/ux-live-component": "^2.24",
         "symfony/ux-turbo": "^2.24",
         "symfony/ux-typed": "^2.24",

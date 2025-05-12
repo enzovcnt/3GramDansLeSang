@@ -3,23 +3,40 @@
 {% block title %}Hello ProfileController!{% endblock %}
 
 {% block body %}
-    <div class="max-w-sm rounded overflow-hidden shadow-lg">
-        {% if app.user.profile.image and app.user.profile.image.imageName %}
-        <img class="w-full" src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile') | imagine_filter('imagePP') }}" alt="Sunset in the mountains">
-        {% endif %}
-        <div class="px-6 py-4">
+
+    <div class="flex flex-col w-full justify-center mt-5">
+        <div class="flex justify-center">
+            {% if app.user.profile.image and app.user.profile.image.imageName %}
+                <img class="max-w-7xl rounded-full" src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile') | imagine_filter('imageEditPP') }}" alt="Sunset in the mountains">
+            {% endif %}
+        </div>
+        <div class="flex justify-center">
             {% if app.user.profile.displayName %}
                 <p><strong>{{ app.user.profile.displayName }}</strong></p>
             {% else %}
                 {{ app.user.email }}
             {% endif %}
         </div>
-
-        {{ form_start(formProfile, {'action': path('app_profile', {id: app.user.profile.id}), 'method': 'POST'}) }}
-        {{ form_row(formProfile.displayName) }}
-        <button type="submit">Edit</button>
-        {{ form_end(formProfile) }}
-        <a href="{{ path('app_addImageProfile', {id: app.user.profile.id}) }}">Nouvelle image</a>
+        <div class="flex justify-center">
+            {{ form_start(formProfile, {'action': path('app_profile', {id: app.user.profile.id}), 'method': 'POST'}) }}
+            {{ form_row(formProfile.displayName) }}
+            <button type="submit">Edit</button>
+            {{ form_end(formProfile) }}
+        </div>
+        <div class="flex justify-center">
+            <a href="{{ path('app_addImageProfile', {id: app.user.profile.id}) }}">Nouvelle image de profile</a>
+        </div>
+        <div class="flex justify-center grid-cols-4 gap-4">
+            {% for post in posts %}
+                {% for img in post.image %}
+                    <div class="mb-5">
+                        <a href="{{ path('app_post_show', {id:post.id}) }}">
+                            <img class="" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
+                        </a>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
 
     </div>
 {% endblock %}
