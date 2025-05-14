@@ -69,6 +69,12 @@ class Profile
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'author')]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, Share>
+     */
+    #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'shareSender')]
+    private Collection $shares;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -78,6 +84,7 @@ class Profile
         $this->receivedFriendRequest = new ArrayCollection();
         $this->conversations = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->shares = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -379,5 +386,35 @@ class Profile
             }
         }
         return false;
+    }
+
+    /**
+     * @return Collection<int, Share>
+     */
+    public function getShares(): Collection
+    {
+        return $this->shares;
+    }
+
+    public function addShare(Share $share): static
+    {
+        if (!$this->shares->contains($share)) {
+            $this->shares->add($share);
+            $share->setShareSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShare(Share $share): static
+    {
+        if ($this->shares->removeElement($share)) {
+            // set the owning side to null (unless already changed)
+            if ($share->getShareSender() === $this) {
+                $share->setShareSender(null);
+            }
+        }
+
+        return $this;
     }
 }
