@@ -15,10 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TchatController extends AbstractController
 {
     #[Route('/tchat/initiate/{id}', name: 'app_tchat_initiate')]
-    public function initiate(Profile $profile, EntityManagerInterface $manager): Response
+    public function initiate(Profile $profile, EntityManagerInterface $manager, Request $request): Response
     {
 
-        if(!$profile){return $this->redirectToRoute('app_people');}
+        if(!$profile)
+        {
+            return $this->redirectToRoute('app_people');
+        }
+
 
         $conversation = $this->getUser()->getProfile()->isChattingWith($profile);
 
@@ -33,7 +37,10 @@ final class TchatController extends AbstractController
         }
 
 
-        return $this->redirectToRoute('app_tchat', ['id' => $conversation->getId() ]);
+        return $this->redirectToRoute('app_tchat', [
+            'id' => $conversation->getId(),
+
+        ]);
     }
 
     #[Route('/tchat/{id}', name: 'app_tchat')]
@@ -43,7 +50,11 @@ final class TchatController extends AbstractController
             return $this->redirectToRoute('app_people');
         }
 
+
         $message = new Message();
+//        if ($postId) {
+//            $message->setContent('/post/' . $postId);
+//        }
         $form = $this->createForm(MessageForm::class, $message);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

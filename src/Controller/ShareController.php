@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Conversation;
 use App\Entity\Post;
 use App\Entity\Profile;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,13 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ShareController extends AbstractController
 {
-    #[Route('/share/{postId}/', name: 'app_share')]
-    public function index(Post $post, Profile $profile, EntityManagerInterface $manager,
-    Request $request,
-    ): Response
+
+    #[Route('/share/{postId}/to/{profileId}', name: 'share')]
+    public function share(): Response
     {
-        return $this->render('share/index.html.twig', [
-            'controller_name' => 'ShareController',
-        ]);
+
+        return $this->render('share/index.html.twig');
     }
+
 }
