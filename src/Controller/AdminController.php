@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,10 +14,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AdminController extends AbstractController
 {
     #[Route('/users', name: 'app_admin')]
-    public function index(UserRepository $repository): Response
+    public function index(UserRepository $repository, PostRepository $postRepository): Response
     {
         return $this->render('admin/index.html.twig', [
             'users' => $repository->findAll(),
+            'posts' => $postRepository->findAll(),
         ]);
     }
 
