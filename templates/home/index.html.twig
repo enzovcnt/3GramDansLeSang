@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="relative inline-block text-left">
+        <button id="dropdownButton" type="button"
+                class="inline-flex justify-center w-l rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                onclick="toggleDropdown()">
+            Partager
+        </button>
+
+        <div id="dropdownMenu"
+             class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div class="py-1">
+                {% for friend in app.user.profile.getFriends() %}
+                <a href="#"
+                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    {{ friend.ofUser.email }}
+                </a>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+
+{% endblock %}
