@@ -44,6 +44,24 @@
     {% for friend in app.user.profile.getFriends() %}
 
         <p><strong>{{ friend.ofUser.email }} </p>
+        <a href="{{ path('app_tchat_initiate', {id:friend.id}) }}" class="bg-blue-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Chat</a>
 
     {% endfor %}
+
+
+    <h3>My chats</h3>
+    {% if app.user.profile.conversations|length > 0 %}
+        {% for tchat in app.user.profile.conversations %}
+
+            <p>
+                {% for participant in tchat.participants %}
+                    {% if participant != app.user.profile %}
+                        <span class="btn btn-success">{{ participant.ofUser.email }}</span>
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ path('app_tchat', {id:tchat.id}) }}" class="btn btn-primary">TChat</a>
+            </p>
+
+        {% endfor %}
+    {% endif %}
 {% endblock %}

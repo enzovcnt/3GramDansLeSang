@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TchatController!{% endblock %}
+
+{% block body %}
+
+    <div class="border border-gray-500">
+
+        {% for message in tchat.messages %}
+            <div>
+                <p>{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</p>
+            </div>
+
+        {% endfor %}
+    </div>
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form.content) }}
+        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">send</button>
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}

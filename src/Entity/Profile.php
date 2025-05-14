@@ -370,4 +370,14 @@ class Profile
 
         return $this;
     }
+
+    public function isChattingWith(Profile $profile):Conversation | bool
+    {
+        foreach ($this->conversations as $conversation) {
+            if($conversation->getParticipants()->contains($profile)){
+                return $conversation;
+            }
+        }
+        return false;
+    }
 }
