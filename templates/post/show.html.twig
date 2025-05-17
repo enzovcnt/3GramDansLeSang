@@ -25,6 +25,7 @@
                 <a href="{{ path('app_post_delete', {id:post.id}) }}">supprimer</a>
                 <a href="{{ path('app_post_addimage', {id:post.id}) }}">Ajouter Image</a>
                 <a href="{{ path('app_comment', {id:post.id}) }}">comment</a>
+                {% include 'share/index.html.twig' %}
 
             </div>
             <div class="px-6 pt-4 pb-2">
@@ -37,7 +38,11 @@
     <div class="mt-5 mb-5">
         <div class="border bg-gray-200">
             {{ form_start(formComment, {'action': path('app_comment', {id:post.id}), 'method': 'POST'}) }}
-            {{ form_row(formComment.content) }}
+            {{ form_row(formComment.content, {
+                attr: {
+                    class: 'w-full border-b border-black outline-none focus:ring-0 py-1'
+                }
+            }) }}
             <button type="submit" class="">Envoyer</button>
             {{ form_end(formComment) }}
         </div>

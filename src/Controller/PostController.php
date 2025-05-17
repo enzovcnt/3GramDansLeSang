@@ -75,6 +75,7 @@ final class PostController extends AbstractController
             $profile = $user->getProfile();
             $post->setAuthor($user);
             $post->setProfile($profile);
+
             $manager->persist($post);
             $manager->flush();
             return $this->redirectToRoute('app_post_addimage', ['id' => $post->getId()]);

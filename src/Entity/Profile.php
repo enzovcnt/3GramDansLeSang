@@ -75,6 +75,18 @@ class Profile
     #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'shareSender')]
     private Collection $shares;
 
+    /**
+     * @var Collection<int, Notification>
+     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'profile')]
+    private Collection $notifications;
+
+    /**
+     * @var Collection<int, Share>
+     */
+    #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'shareRecipient')]
+    private Collection $receivedShare;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -85,6 +97,8 @@ class Profile
         $this->conversations = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->shares = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+        $this->receivedShare = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -412,6 +426,66 @@ class Profile
             // set the owning side to null (unless already changed)
             if ($share->getShareSender() === $this) {
                 $share->setShareSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setProfile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getProfile() === $this) {
+                $notification->setProfile(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Share>
+     */
+    public function getReceivedShare(): Collection
+    {
+        return $this->receivedShare;
+    }
+
+    public function addReceivedShare(Share $receivedShare): static
+    {
+        if (!$this->receivedShare->contains($receivedShare)) {
+            $this->receivedShare->add($receivedShare);
+            $receivedShare->setShareRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedShare(Share $receivedShare): static
+    {
+        if ($this->receivedShare->removeElement($receivedShare)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedShare->getShareRecipient() === $this) {
+                $receivedShare->setShareRecipient(null);
             }
         }
 

@@ -51,6 +51,7 @@ class Post
     #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'post')]
     private Collection $shares;
 
+
     public function __construct()
     {
         $this->image = new ArrayCollection();
@@ -228,4 +229,5 @@ class Post
 
         return $this;
     }
+
 }

@@ -10,6 +10,11 @@
             <div>
                 <p>{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</p>
             </div>
+            {% if message.type == 1 %}
+                <div>
+                    <a href="{{ path('app_show', {id:}) }}">{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</a>
+                </div>
+            {% endif %}
 
         {% endfor %}
     </div>

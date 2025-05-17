@@ -21,6 +21,10 @@ class Share
     #[ORM\JoinColumn(nullable: false)]
     private ?Profile $shareSender = null;
 
+    #[ORM\ManyToOne(inversedBy: 'receivedShare')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Profile $shareRecipient = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +50,18 @@ class Share
     public function setShareSender(?Profile $shareSender): static
     {
         $this->shareSender = $shareSender;
+
+        return $this;
+    }
+
+    public function getShareRecipient(): ?Profile
+    {
+        return $this->shareRecipient;
+    }
+
+    public function setShareRecipient(?Profile $shareRecipient): static
+    {
+        $this->shareRecipient = $shareRecipient;
 
         return $this;
     }

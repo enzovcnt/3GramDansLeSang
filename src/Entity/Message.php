@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,6 +28,12 @@ class Message
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Conversation $conversation = null;
+
+
+
+
+
+
 
     public function getId(): ?int
     {
@@ -79,4 +87,7 @@ class Message
 
         return $this;
     }
+
+
+
 }

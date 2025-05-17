@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Conversation;
 use App\Entity\Message;
+use App\Entity\Post;
 use App\Entity\Profile;
 use App\Form\MessageForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,9 +53,7 @@ final class TchatController extends AbstractController
 
 
         $message = new Message();
-//        if ($postId) {
-//            $message->setContent('/post/' . $postId);
-//        }
+
         $form = $this->createForm(MessageForm::class, $message);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
