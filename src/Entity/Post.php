@@ -51,6 +51,9 @@ class Post
     #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'post')]
     private Collection $shares;
 
+    #[ORM\OneToMany(mappedBy: 'postType', targetEntity: Message::class)]
+    private Collection $messages;
+
 
     public function __construct()
     {
@@ -226,6 +229,28 @@ class Post
                 $share->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMessageType(): ?Message
+    {
+        return $this->messageType;
+    }
+
+    public function setMessageType(?Message $messageType): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($messageType === null && $this->messageType !== null) {
+            $this->messageType->setPostType(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($messageType !== null && $messageType->getPostType() !== $this) {
+            $messageType->setPostType($this);
+        }
+
+        $this->messageType = $messageType;
 
         return $this;
     }

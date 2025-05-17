@@ -7,6 +7,7 @@ use App\Entity\Message;
 use App\Entity\Post;
 use App\Entity\Profile;
 use App\Form\MessageForm;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,7 @@ final class TchatController extends AbstractController
     }
 
     #[Route('/tchat/{id}', name: 'app_tchat')]
-    public function chat(Conversation $tchat, Request $request, EntityManagerInterface $manager): Response
+    public function chat(Conversation $tchat, Request $request, EntityManagerInterface $manager, PostRepository $postRepository): Response
     {
         if (!$tchat) {
             return $this->redirectToRoute('app_people');
@@ -70,6 +71,7 @@ final class TchatController extends AbstractController
         return $this->render('tchat/index.html.twig', [
             'tchat' => $tchat,
             'form' => $form,
+            'posts' => $postRepository->findAll(),
         ]);
     }
 }

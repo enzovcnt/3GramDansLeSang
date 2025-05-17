@@ -40,12 +40,15 @@ final class ShareController extends AbstractController
         UrlGeneratorInterface $urlGenerator
     ): Response
     {
-        if (!$this->getUser()) {
-            $this->redirectToRoute('app_login');
+        if (!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
         }
-
-
         $recipient = $profileRepository->find($recipientId);
+        if (!$recipient)
+        {
+            return $this->redirectToRoute('app_people');
+        }
 
         $share = New Share();
         $share->setPost($post);
@@ -74,7 +77,8 @@ final class ShareController extends AbstractController
         $message->setAuthor($this->getUser()->getProfile());
         $message->setConversation($conversation);
         $message->setContent($postUrl);
-
+        $message->setType(1);
+        $message->setPostType($post);
         $message->setCreatedAt(new \DateTimeImmutable());
         $manager->persist($message);
         $manager->flush();

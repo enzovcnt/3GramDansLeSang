@@ -32,6 +32,9 @@ class Message
     #[ORM\Column(nullable: true)]
     private ?int $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'messageType', cascade: ['persist', 'remove'])]
+    private ?Post $postType = null;
+
 
 
 
@@ -99,6 +102,18 @@ class Message
     public function setType(?int $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPostType(): ?Post
+    {
+        return $this->postType;
+    }
+
+    public function setPostType(?Post $postType): static
+    {
+        $this->postType = $postType;
 
         return $this;
     }
