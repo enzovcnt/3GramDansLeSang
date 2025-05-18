@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Like;
+use App\Entity\Notification;
 use App\Entity\Post;
 use App\Repository\LikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,6 +33,14 @@ final class LikeController extends AbstractController
             $like->setAuthor($this->getUser());
             $manager->persist($like);
             $isLiked = true;
+
+            $notification = new Notification();
+            $notification->setProfile($post->getAuthor()->getProfile());
+            $notification->setDate(new \DateTime());
+            $notification->setType1(1);
+            $notification->setIslike($like);
+            $notification->setSeen(false);
+            $manager->persist($notification);
         }
         $manager->flush();
 
