@@ -7,13 +7,15 @@
     <div class="border border-gray-500">
 
         {% for message in tchat.messages %}
-            <div>
-                <p>{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</p>
-            </div>
+
             {% if message.type == 1 %}
                 <div>
                     <a href="{{ path('app_post_show', {id: message.postType.id}) }}">{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</a>
                 </div>
+                {% else %}
+                    <div>
+                        <p>{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</p>
+                    </div>
             {% endif %}
 
         {% endfor %}
