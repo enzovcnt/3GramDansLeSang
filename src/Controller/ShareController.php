@@ -88,7 +88,7 @@ final class ShareController extends AbstractController
         return $this->redirectToRoute('app_tchat', [
             'id' => $conversation->getId(),
             'profiles' => $profileRepository->findAll(),
-            'postId' => $post->getId(),
+
 
         ]);
     }

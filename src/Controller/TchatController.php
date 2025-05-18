@@ -48,24 +48,12 @@ final class TchatController extends AbstractController
 
     #[Route('/tchat/{id}', name: 'app_tchat')]
     public function chat(Conversation $tchat, Request $request, EntityManagerInterface $manager, PostRepository $postRepository,
-    UrlGeneratorInterface $urlGenerator
     ): Response
     {
         if (!$tchat) {
             return $this->redirectToRoute('app_people');
         }
 
-        $postId = $request->query->get('postId');
-
-        $postUrl = null;
-        if ($postId) {
-            $post = $postRepository->find($postId);
-            if ($post) {
-                $postUrl = $urlGenerator->generate('app_post_show', [
-                    'id' => $post->getId(),
-                ], UrlGeneratorInterface::ABSOLUTE_URL);
-            }
-        }
 
 
         $message = new Message();
@@ -86,8 +74,8 @@ final class TchatController extends AbstractController
         return $this->render('tchat/index.html.twig', [
             'tchat' => $tchat,
             'form' => $form,
-            'posts' => $postRepository->findAll(),
-            'postUrl' => $postUrl,
+
+
         ]);
     }
 }
