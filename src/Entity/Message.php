@@ -36,11 +36,6 @@ class Message
     private ?Post $postType = null;
 
 
-
-
-
-
-
     public function getId(): ?int
     {
         return $this->id;

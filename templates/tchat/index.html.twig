@@ -12,7 +12,7 @@
             </div>
             {% if message.type == 1 %}
                 <div>
-                    <a href="{{ path('app_post_show', {id:posts[0].id}) }}">{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</a>
+                    <a href="{{ path('app_post_show', {id: message.postType.id}) }}">{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</a>
                 </div>
             {% endif %}
 
