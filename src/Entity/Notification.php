@@ -24,6 +24,7 @@ class Notification
     private ?int $type1 = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private ?Like $islike = null;
 
     #[ORM\Column]
