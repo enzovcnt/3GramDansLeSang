@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}3GramDansLeSang{% endblock %}</title>
         <link rel="icon" href="{{ asset('images/favicon-16x16.png') }}">
         {% block stylesheets %}
@@ -12,7 +13,7 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body class="bg-gray-900">
     {% include('navbar/navbar.html.twig') %}
     <div class="container mx-auto">
         {% block body %}{% endblock %}

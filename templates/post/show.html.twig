@@ -1,59 +1,90 @@
 {% extends('base.html.twig') %}
 {% form_theme formComment 'tailwind_2_layout.html.twig' %}
+{% block title %}Show{% endblock %}
 {% block body %}
 
     <div class="flex justify-center mt-5 mb-5 w-full">
 
-        <div class="w-full max-w-9/10 rounded overflow-hidden shadow-lg">
+        <div class="w-full max-w-9/10 rounded overflow-hidden shadow-lg bg-white overflow-visible">
             {% for img in post.image %}
                 <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
             {% endfor %}
-            <div class="px-6 py-4">
+            <div class="px-6 py-4 overflow-visible">
 
                 <p class="text-gray-700 text-3xl">
                     {{ post.content }}
                 </p>
                 <p>
-                    {% if app.user.profile %}
-                            {{ app.user.profile.displayName }}
-                    {% else %}
-                            {{ app.user.email }}
+                    {% if post.profile.displayName %}
+                    <a href="{{ path('app_profile', {id: post.profile.id}) }}">
+                        <p class="text-black-700 text-base text-4xl">
+                            {{ post.profile.displayName }}
+                        </p>
+                    </a>
+
+                    {% if post.profile.image %}
+                        <a href="{{ path('app_profile', {id: post.profile.id}) }}">
+                            <img src="{{ vich_uploader_asset(post.profile.image, 'imageFile')|imagine_filter('imagePP') }}" alt="..." class="rounded-full w-12 h-12 inline-block align-middle me-2">
+                        </a>
                     {% endif %}
+                    {% else %}
+                <p class="text-black-700 text-base text-3xl">
+                    {{ post.author.email }}
                 </p>
-                <a href="{{ path('app_posts') }}">Retour</a>
-                <a href="{{ path('app_post_edit', {id:post.id}) }}">Editer</a>
-                <a href="{{ path('app_post_delete', {id:post.id}) }}">supprimer</a>
-                <a href="{{ path('app_post_addimage', {id:post.id}) }}">Ajouter Image</a>
-                <a href="{{ path('app_comment', {id:post.id}) }}">comment</a>
-                {% include 'share/index.html.twig' %}
+
+                    {% endif %}
+                    <div class="ms-3 mt-10">
+                    <a href="{{ path('app_posts') }}" class="px-4 py-2 rounded-lg bg-yellow-400 text-gray-900 font-medium hover:bg-yellow-500 transition">Retour</a>
+                    {% if post.author == app.user %}
+                        <a href="{{ path('app_post_edit', {id:post.id}) }}" class="px-4 py-2 rounded-lg bg-yellow-400 text-gray-900 font-medium hover:bg-yellow-500 transition">Editer</a>
+                        <a href="{{ path('app_post_delete', {id:post.id}) }}" class="px-4 py-2 rounded-lg bg-red-400 text-gray-900 font-medium hover:bg-red-500 transition">supprimer</a>
+                        <a href="{{ path('app_post_addimage', {id:post.id}) }}" class="px-4 py-2 rounded-lg bg-yellow-400 text-gray-900 font-medium hover:bg-yellow-500 transition">Ajouter Image</a>
+                    {% endif %}
+                    <a href="{{ path('app_comment', {id:post.id}) }}" class="px-4 py-2 rounded-lg bg-yellow-400 text-gray-900 font-medium hover:bg-yellow-500 transition">comment</a>
+                    {% include 'share/index.html.twig' %}
+                    {% include 'like/index.html.twig' %}
+                </div>
 
             </div>
-            <div class="px-6 pt-4 pb-2">
-                <span>Futur hashtag</span>
 
-            </div>
         </div>
 
     </div>
-    <div class="mt-5 mb-5">
-        <div class="border bg-gray-200">
-            {{ form_start(formComment, {'action': path('app_comment', {id:post.id}), 'method': 'POST'}) }}
+    <div class="mt-10 mb-10 space-y-6">
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6">
+            {{ form_start(formComment, {
+                'action': path('app_comment', {id: post.id}),
+                'method': 'POST',
+                'attr': {'class': 'space-y-4'}
+            }) }}
+
             {{ form_row(formComment.content, {
-                attr: {
-                    class: 'w-full border-b border-black outline-none focus:ring-0 py-1'
+                'attr': {
+                    'class': 'w-full bg-gray-700 text-white placeholder-gray-400 border-b border-yellow-400 focus:outline-none focus:ring-0 py-2 px-3 rounded-md'
+                },
+                'label_attr': {
+                    'class': 'text-sm font-medium text-gray-300 mb-1'
                 }
             }) }}
-            <button type="submit" class="">Envoyer</button>
+
+            <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                Envoyer
+            </button>
+
             {{ form_end(formComment) }}
         </div>
 
-        {% for comment in post.comments %}
-            <div>
-                <p>Author : {{ comment.author.email }}</p>
-                <p>{{ comment.content }}</p>
-            </div>
-        {% endfor %}
+        <div class="space-y-4">
+            {% for comment in post.comments %}
+                <div class="bg-gray-700 border border-gray-600 rounded-lg p-4">
+                    <p class="text-sm text-yellow-400 font-semibold">Author: {{ comment.author.email }}</p>
+                    <p class="text-gray-200 mt-1">{{ comment.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
 
 
 {% endblock %}

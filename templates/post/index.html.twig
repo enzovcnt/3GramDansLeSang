@@ -6,30 +6,39 @@
     <div class="grid grid-cols-1 ">
     {% for post in posts %}
         <div class="flex w-full justify-center">
-            <div class="w-full rounded overflow-hidden shadow-lg mt-5 " >
+
+            <div class="w-full rounded overflow-hidden shadow-lg mt-5 bg-white" >
                 {% for img in post.image %}
                     <a href="{{ path('app_post_show', {id:post.id}) }}">
                         <img class="w-full" src="{{ vich_uploader_asset(img, "imageFile") | imagine_filter('imagePost') }}" alt="...">
                     </a>
                 {% endfor %}
                 <div class="px-6 pt-4 pb-2">
-                    <a href="" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">Autre chose</a>
+                    {% include 'like/index.html.twig' %}
                 </div>
                 <div class="px-6 py-4">
-                    <p>
+                    {% if post.profile.displayName %}
+                        <a href="{{ path('app_profile', {id: post.profile.id}) }}">
+                            <p class="text-black-700 text-base text-4xl">
+                                {{ post.profile.displayName }}
+                            </p>
+                        </a>
+
+                        {% if post.profile.image %}
+                            <a href="{{ path('app_profile', {id: post.profile.id}) }}">
+                                <img src="{{ vich_uploader_asset(post.profile.image, 'imageFile')|imagine_filter('imagePP') }}" alt="..." class="rounded-full w-12 h-12 inline-block align-middle me-2">
+                            </a>
+                        {% endif %}
+                    {% else %}
+                    <p class="text-black-700 text-base text-3xl">
                         {{ post.author.email }}
                     </p>
-                    <p class="text-gray-700 text-base">
-                        {{ post.content }}
+                        {% endif %}
+                    <p class="text-gray-700 text-base text-4xl mt-5">
+                        Description : {{ post.content }}
                     </p>
                 </div>
 
-
-                <div class="px-6 pt-4 pb-2">
-                    <span>Futur hashtag</span>
-
-                </div>
-                {% include 'like/index.html.twig' %}
             </div>
         </div>
 

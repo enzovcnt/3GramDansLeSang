@@ -1,11 +1,33 @@
 {% extends 'base.html.twig' %}
 {% form_theme formNew 'tailwind_2_layout.html.twig' %}
+{% block title %}Create{% endblock %}
+
 {% block body %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-xl w-full bg-gray-800 border border-gray-700 p-8 rounded-xl shadow-lg">
+            <h2 class="text-center text-2xl font-bold text-yellow-400 mb-6">Create New Content</h2>
 
-    {{ form_start(formNew) }}
-    {{ form_row(formNew.content) }}
-    <button type="submit">Envoyer</button>
-    {{ form_end(formNew) }}
+            {{ form_start(formNew, {'attr': {'class': 'space-y-6'}}) }}
 
+            <div>
+                {{ form_row(formNew.content, {
+                    'attr': {
+                        'class': 'w-full px-4 py-2 bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400'
+                    },
+                    'label_attr': {
+                        'class': 'block text-sm font-medium text-gray-300 mb-1'
+                    }
+                }) }}
+            </div>
 
+            <div class="text-right">
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg shadow-sm text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                    Envoyer
+                </button>
+            </div>
+
+            {{ form_end(formNew) }}
+        </div>
+    </div>
 {% endblock %}

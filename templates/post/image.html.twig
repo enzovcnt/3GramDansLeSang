@@ -1,27 +1,53 @@
 {% extends 'base.html.twig' %}
 {% form_theme formImage 'tailwind_2_layout.html.twig' %}
+{% block title %}Image{% endblock %}
+
 {% block body %}
+    <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
+        <div class="max-w-4xl mx-auto space-y-10">
 
+            <h2 class="text-2xl font-bold text-yellow-400">Images associées</h2>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {% for image in post.image %}
+                    <div class="relative group border border-gray-700 rounded-lg overflow-hidden shadow-md bg-gray-800">
+                        <img class="w-full h-auto object-cover"
+                             src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('imagePost') }}"
+                             alt="Image postée">
 
-    <div class="">
-        {% for image in post.image %}
-            <div class="">
-                <img class="h-auto max-w-xl" src="{{ vich_uploader_asset(image, "imageFile") | imagine_filter('imagePost') }}" alt="image description">
-                <a href="{{ path('app_removeImage',{id:image.id}) }}">X</a>
+                        <a href="{{ path('app_removeImage', {id: image.id}) }}"
+                           class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700 transition">
+                            Supprimer
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="text-gray-400">Aucune image pour ce post.</p>
+                {% endfor %}
             </div>
 
-        {% endfor %}
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow">
+                <h3 class="text-lg font-semibold text-yellow-400 mb-4">Ajouter une image</h3>
+                {{ form_start(formImage, {'attr': {'class': 'space-y-4'}}) }}
+                {{ form_row(formImage.imageFile, {
+                    'attr': {
+                        'class': 'w-full px-4 py-2 bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400'
+                    },
+                    'label_attr': {'class': 'text-gray-300'}
+                }) }}
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg shadow-sm text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                    Envoyer
+                </button>
+                {{ form_end(formImage) }}
+            </div>
+
+            <div class="text-center">
+                <a href="{{ path('app_post_show', {id: post.id}) }}"
+                   class="inline-block mt-4 px-4 py-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow">
+                    Retour au post
+                </a>
+            </div>
+
+        </div>
     </div>
-
-
-
-    {{ form_start(formImage) }}
-    {{ form_row(formImage.imageFile) }}
-    <button type="submit">Envoyer</button>
-    {{ form_end(formImage) }}
-
-    <a href="{{ path('app_post_show', {id:post.id}) }}" class="card-link btn btn-warning">retour</a>
-
-
 {% endblock %}

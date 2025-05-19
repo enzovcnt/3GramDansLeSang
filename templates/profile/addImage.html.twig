@@ -3,25 +3,23 @@
 {% block title %}Hello ProfileController!{% endblock %}
 
 {% block body %}
-        <div class="max-w-sm rounded overflow-hidden shadow-lg">
-            {% if app.user.profile.image and app.user.profile.image.imageName %}
-                <img class="w-full" src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile') | imagine_filter('imagePP') }}">
+    <div class="max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-gray-800 text-gray-200 p-6">
+        {% if app.user.profile.image and app.user.profile.image.imageName %}
+            <img class="w-full rounded-full border-4 border-yellow-400 mb-4" src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile') | imagine_filter('imagePP') }}" alt="Profile picture">
+        {% endif %}
+        <div class="mb-6 text-center">
+            {% if app.user.profile.displayName %}
+                <p class="text-yellow-400 text-xl font-bold">{{ app.user.profile.displayName }}</p>
+            {% else %}
+                <p class="text-yellow-400 text-xl font-bold">{{ app.user.email }}</p>
             {% endif %}
-            <div class="px-6 py-4">
-                {% if app.user.profile.displayName %}
-                    <p><strong>{{ app.user.profile.displayName }}</strong></p>
-                {% else %}
-                    {{ app.user.email }}
-                {% endif %}
-            </div>
-
-            {{ form_start(formProfileAddImage) }}
-            {{ form_row(formProfileAddImage.imageFile) }}
-            <button type="submit">Ajouter</button>
-            {{ form_end(formProfileAddImage) }}
-
-
         </div>
 
-
+        {{ form_start(formProfileAddImage, {'attr': {'class': 'space-y-4'}}) }}
+        {{ form_row(formProfileAddImage.imageFile, {'attr': {'class': 'w-full py-2 px-3 rounded border border-yellow-400 bg-gray-900 text-yellow-300 placeholder-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400'}}) }}
+        <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded transition">
+            Ajouter
+        </button>
+        {{ form_end(formProfileAddImage) }}
+    </div>
 {% endblock %}
