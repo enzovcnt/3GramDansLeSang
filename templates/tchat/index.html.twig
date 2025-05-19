@@ -1,31 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TchatController!{% endblock %}
+{% block title %}Tchat{% endblock %}
 
 {% block body %}
+    <div class="max-w-3xl mx-auto mt-10 shadow-xl border border-gray-700 rounded-xl bg-gray-900 text-white">
 
-    <div class="border border-gray-500">
+        <div class="px-6 py-4 border-b border-gray-700 bg-gray-800 rounded-t-xl">
+            <h2 class="text-2xl font-bold text-yellow-400">Tchat</h2>
+        </div>
 
-        {% for message in tchat.messages %}
 
-            {% if message.type == 1 %}
-                <div>
-                    <a href="{{ path('app_post_show', {id: message.postType.id}) }}">{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</a>
-                </div>
-                {% else %}
-                    <div>
-                        <p>{{ message.createdAt|date('H:i') }}  - <strong>{{ message.author.ofUser.email }} :</strong> {{ message.content }}</p>
+        <div class="p-6 space-y-4 max-h-[500px] overflow-y-auto">
+            {% for message in tchat.messages %}
+                {% if message.type == 1 %}
+                    <div class="bg-gray-800 p-4 rounded-lg shadow hover:shadow-md transition">
+                        <a href="{{ path('app_post_show', {id: message.postType.id}) }}" class="text-yellow-300 hover:underline">
+                            <span class="text-sm text-gray-400">{{ message.createdAt|date('H:i') }}</span>
+                            <strong class="ml-2 text-yellow-400">{{ message.author.ofUser.email }}</strong> :
+                            {{ message.content }}
+                        </a>
                     </div>
-            {% endif %}
+                {% else %}
+                    <div class="bg-gray-700 p-4 rounded-lg shadow hover:shadow-md transition">
+                        <span class="text-sm text-gray-400">{{ message.createdAt|date('H:i') }}</span>
+                        <strong class="ml-2 text-yellow-300">{{ message.author.ofUser.email }}</strong> :
+                        {{ message.content }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
 
-        {% endfor %}
+        <!-- Form -->
+        <div class="px-6 py-4 border-t border-gray-700 bg-gray-800 rounded-b-xl">
+            {{ form_start(form, {'attr': {'class': 'flex items-center space-x-4'}}) }}
+            {{ form_widget(form.content, {'attr': {'class': 'flex-1 p-2 rounded-lg bg-gray-700 text-white border border-gray-600 placeholder-gray-400'}}) }}
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-6 rounded-lg transition">
+                Envoyer
+            </button>
+            {{ form_end(form) }}
+        </div>
     </div>
-    <div>
-        {{ form_start(form) }}
-        {{ form_widget(form.content) }}
-        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-5">send</button>
-        {{ form_end(form) }}
-    </div>
-
-
 {% endblock %}

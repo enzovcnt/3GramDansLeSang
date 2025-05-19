@@ -1,10 +1,9 @@
+
 <nav class="flex items-center justify-between flex-wrap bg-gray-500 p-6 sticky top-0 z-50 shadow-md">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <!-- Cercle central -->
-            <circle cx="50" cy="50" r="20" fill="yellow" />
 
-            <!-- Rayons -->
+        <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="20" fill="yellow" />
             <g stroke="orange" stroke-width="4">
                 <line x1="50" y1="5" x2="50" y2="20"/>
                 <line x1="50" y1="80" x2="50" y2="95"/>
@@ -18,56 +17,61 @@
         </svg>
         <span class="font-semibold text-xl tracking-tight ms-3">3GDLS</span>
     </div>
+
+
     <div class="block lg:hidden">
-        <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+        <button id="burger-btn" class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <title>Menu</title>
+                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+            </svg>
         </button>
     </div>
-    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+
+    <div id="burger-menu" class="w-full hidden lg:flex lg:items-center lg:w-auto">
         <div class="text-xl lg:flex-grow">
             {% if app.user %}
-            <a href="{{ path('app_posts') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
-                Accueil
-            </a>
-            <a href="{{ path('app_post_create') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
-                Create
-            </a>
-            <a href="{{ path('app_people') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
-                Friends
-            </a>
-            <a href="{{ path('app_post_friend') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
-                PostFriend
-            </a>
+                <a href="{{ path('app_posts') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">Accueil</a>
+                <a href="{{ path('app_post_create') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">Create</a>
+                <a href="{{ path('app_people') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">Friends</a>
+                <a href="{{ path('app_post_friend') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">PostFriend</a>
+                <a href="{{ path('app_notification') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">Notification</a>
+
                 {% if app.user.profile.image %}
                     <a href="{{ path('app_profile', {id: app.user.profile.id}) }}">
-                        <img src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile')|imagine_filter('imagePP') }}"
-                             alt="..." class="rounded-full max-w-50 max-h-50" >
+                        <img src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile')|imagine_filter('imagePP') }}" alt="..." class="rounded-full w-12 h-12 inline-block align-middle me-2">
                     </a>
                 {% endif %}
+
                 {% if app.user.profile.displayName %}
-                    <p><strong>{{ app.user.profile.displayName }}</strong></p>
+                    <p class="inline-block text-white align-middle"><strong>{{ app.user.profile.displayName }}</strong></p>
                 {% else %}
-                    {{ app.user.email }}
+                    <p class="inline-block text-white align-middle">{{ app.user.email }}</p>
                 {% endif %}
 
-            <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">
-                Logout
-            </a>
+                <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">Logout</a>
 
                 {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-                    <a href="{{ path('app_admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">
-                        Admin
-                    </a>
-
+                    <a href="{{ path('app_admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">Admin</a>
                 {% endif %}
             {% else %}
-            <a href="{{ path('app_register') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
-                Register
-            </a>
-            <a href="{{ path('app_login') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">
-                Login
-            </a>
+                <a href="{{ path('app_register') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">Register</a>
+                <a href="{{ path('app_login') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white mr-4 text-xl">Login</a>
             {% endif %}
         </div>
     </div>
 </nav>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const burgerBtn = document.getElementById("burger-btn");
+        const burgerMenu = document.getElementById("burger-menu");
+
+        burgerBtn.addEventListener("click", function () {
+            burgerMenu.classList.toggle("hidden");
+            console.log('bouton');
+        });
+    });
+</script>
+
