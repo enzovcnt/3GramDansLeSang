@@ -18,6 +18,10 @@ final class FriendRequestController extends AbstractController
     #[Route('send/{id}', name: 'app_send_friend_request')]
     public function send(Profile $profile, EntityManagerInterface $manager, FriendRequestRepository $friendRequestRepository): Response
     {
+        if (!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         $sender = $this->getUser()->getProfile();
         $recipient = $profile;
         $friendRequest = new FriendRequest();

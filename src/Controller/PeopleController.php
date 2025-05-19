@@ -12,6 +12,10 @@ final class PeopleController extends AbstractController
     #[Route('/people', name: 'app_people')]
     public function index(ProfileRepository $profileRepository): Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('people/index.html.twig', [
             'profiles' => $profileRepository->findAll(),
         ]);

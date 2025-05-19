@@ -16,6 +16,10 @@ final class AdminController extends AbstractController
     #[Route('/users', name: 'app_admin')]
     public function index(UserRepository $repository, PostRepository $postRepository): Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('admin/index.html.twig', [
             'users' => $repository->findAll(),
             'posts' => $postRepository->findAll(),
@@ -26,6 +30,10 @@ final class AdminController extends AbstractController
     #[Route('/promote/{id}', name: 'app_admin_promote')]
     public function promote(EntityManagerInterface $manager, User $user): Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         if(!in_array('ROLE_ADMIN',$user->getRoles()))
         {
             $user->setRoles(['ROLE_ADMIN']);
@@ -38,6 +46,10 @@ final class AdminController extends AbstractController
     #[Route('/demote/{id}', name: 'app_admin_demote')]
     public function demote(EntityManagerInterface $manager, User $user): Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         if(in_array('ROLE_ADMIN',$user->getRoles()))
         {
             $user->setRoles([]);
