@@ -42,11 +42,14 @@
                         <img src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile')|imagine_filter('imagePP') }}" alt="..." class="rounded-full w-12 h-12 inline-block align-middle me-2">
                     </a>
                 {% endif %}
-
                 {% if app.user.profile.displayName %}
+            <a href="{{ path('app_profile', {id: app.user.profile.id}) }}">
                     <p class="inline-block text-white align-middle"><strong>{{ app.user.profile.displayName }}</strong></p>
+            </a>
                 {% else %}
+            <a href="{{ path('app_profile', {id: app.user.profile.id}) }}">
                     <p class="inline-block text-white align-middle">{{ app.user.email }}</p>
+            </a>
                 {% endif %}
 
                 <a href="{{ path('app_logout') }}" class="block mt-4 lg:inline-block lg:mt-0 text-yellow-200 hover:text-white text-xl">Logout</a>
